@@ -3,6 +3,7 @@
     <h1>HI!!!!!!!!!!!!!</h1>
     <p>Test</p>
     <h3>new test</h3>
+    <h2>it working!!!</h2>
   </div>
 </template>
 
