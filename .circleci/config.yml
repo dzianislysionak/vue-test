@@ -1,20 +1,36 @@
+# version: 2.1
+# jobs:
+#   first:
+#     docker:
+#       - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
+#     steps:
+#       - checkout # check out the code in the project directory
+#       - run: echo "hello world" # run the `echo` command
+#   second:
+#     docker:
+#       - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
+#     steps:
+#       - checkout # check out the code in the project directory
+#       - run: echo "double" # run the `echo` command
+# workflows:
+#   version: 2.1
+#   first_second:
+#     jobs:
+#       - first
+#       - second
+
 version: 2.1
-jobs:
-  first:
-    docker:
-      - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
-    steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
-  second:
-    docker:
-      - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
-    steps:
-      - checkout # check out the code in the project directory
-      - run: echo "double" # run the `echo` command
+
+orbs:
+  heroku: circleci/heroku@x.y # Use the Heroku orb in your config
+
 workflows:
-  version: 2.1
-  first_second:
+  heroku_deploy:
     jobs:
-      - first
-      - second
+      - build
+      - heroku/deploy-via-git:
+          requires:
+            - build # only run deploy-via-git job if the build job has completed
+          filters:
+            branches:
+              only: master # only run deploy-via-git job on master branch
